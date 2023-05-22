@@ -32,6 +32,58 @@ namespace Evolve
         {
             services.AddControllers();
 
+            //_______ Need connection ___________
+
+
+            //_______ JWT ToKKEN ________
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(option =>
+            {
+                option.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = Configuration["Jwt:Issuer"],
+                    ValidAudience = Configuration["Jwt:Audience"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
+                };
+            });
+            //services.AddMvc();
+
+            //_______ Swagger ________
+            //services.AddSwaggerGen(c => 
+            //{
+            //    c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
+            //    //pass JWt tokken to  Swagger
+            //    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+            //    {
+            //        Description = "JWT Authorization",
+            //        Name = "Authorization",
+            //        In = ParameterLocation.Header,
+            //        Type = SecuritySchemeType.ApiKey,
+            //        Scheme = "Bearer"
+            //    });
+            //    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+            //    {
+            //        {
+            //            new OpenApiSecurityScheme
+            //            {
+            //                Reference = new OpenApiReference
+            //                {
+            //                    Type = ReferenceType.SecurityScheme,
+            //                    Id = "Bearer"
+            //                }
+            //            },
+            //            new string[]{}
+            //        }
+            //    });
+            // });
+
+
+
+
+            //___________________ Swagger ____________________________________
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Evolve", Version = "v1" });
@@ -50,8 +102,10 @@ namespace Evolve
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
+            //____________________ Swagger _________________________
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {

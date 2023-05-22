@@ -1,6 +1,23 @@
 create database Evolve
 use Evolve
 
+--_______________________ User ____________________________
+create table UserInf(
+	UserId int primary key identity,
+	UserName varchar(35),
+	UserPassword varchar(50),
+	email varchar(50),
+	gender bit,
+	status bit default 0,
+	CreateBy int,
+	CreateOn date,
+	ModifiedBy int,
+	ModifiedOn date,
+)
+
+
+
+--_______________________ Category ____________________________
 create table Category(
 	Id int primary key identity , 
 	Name varchar(25),
@@ -11,9 +28,6 @@ create table Category(
 	ModifiedBy int,
 	ModifiedOn date,
 )
-
-select * from category
-
 
 create table Products(
 	Id int primary key identity,
@@ -27,7 +41,10 @@ create table Products(
 	ModifiedBy int,	
 	ModifiedOn date,
 )
-use Evolve
+
+
+
+
 alter PROCEDURE spInsertProduct
     @Name NVARCHAR(100),
     @Price DECIMAL(18, 2),
