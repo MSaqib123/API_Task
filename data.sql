@@ -27,17 +27,18 @@ create table Products(
 	ModifiedBy int,	
 	ModifiedOn date,
 )
-
+use Evolve
 alter PROCEDURE spInsertProduct
     @Name NVARCHAR(100),
     @Price DECIMAL(18, 2),
+	@Description varchar(500),
     @CategoryId INT,
 	@CreateBy int,
 	@CreateOn date
 AS
 BEGIN
-    INSERT INTO Products(Name, Price, CatId, ModifiedBy,ModifiedOn)
-    VALUES(@Name, @Price, @CategoryId , @CreateBy,@CreateOn)
+    INSERT INTO Products(Name, Price, Description, CatId, CreateBy,CreateOn)
+    VALUES(@Name, @Price , @Description, @CategoryId , @CreateBy,@CreateOn)
 END									   
 
 
@@ -45,6 +46,7 @@ alter PROCEDURE spUpdateProduct
     @Id INT,
     @Name NVARCHAR(100),
     @Price DECIMAL(18, 2),
+	@Description varchar(500),
     @CategoryId INT,
 	@ModifiedBy int ,
 	@ModifiedOn date
@@ -53,6 +55,7 @@ BEGIN
     UPDATE Products
     SET Name = @Name,
         Price = @Price,
+		Description = @Description,
         CatId= @CategoryId,
 		ModifiedBy = @ModifiedBy,
 		ModifiedOn = @ModifiedOn
@@ -68,6 +71,7 @@ BEGIN
     WHERE Id = @Id and status = 0
 END
 
+select * from Products
 
 alter PROCEDURE spGetAllProducts
 AS
